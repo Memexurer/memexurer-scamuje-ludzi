@@ -1,0 +1,6 @@
+name: CorePlugin
+version: ${project.version}
+main: pl.nordhc.core.bukkit.CorePlugin
+authors: [ KGuild ]
+description: jebac kinczka
+website: kguild.pl
