@@ -12,13 +12,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public final class FlatConfigurationUtils {
+  private static final Gson gson = new Gson();
 
   private FlatConfigurationUtils() {
   }
 
   public static void load(Class<?> clazz, File file) throws IOException {
-    Gson gson = new Gson();
-
     try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file))) {
       JsonArray array = gson.fromJson(reader, JsonArray.class);
 
@@ -28,21 +27,20 @@ public final class FlatConfigurationUtils {
         field.set(null, gson.fromJson(object.get(field.getName()), field.getType()));
       }
     } catch (IllegalAccessException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
   public static void save(Class<?> clazz, File file) throws IOException {
     JsonArray jsonElements = new JsonArray();
 
-    Gson gson = new Gson();
     for (Field field : clazz.getFields()) {
       try {
         JsonObject object = new JsonObject();
         object.add(field.getName(), gson.toJsonTree(field.get(null)));
         jsonElements.add(object);
       } catch (IllegalAccessException e) {
-        e.printStackTrace();
+        throw new RuntimeException(e);
       }
     }
 
