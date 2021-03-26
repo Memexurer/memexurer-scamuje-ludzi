@@ -1,6 +1,6 @@
 name: CorePlugin
 version: ${project.version}
-main: pl.nordhc.core.bukkit.CorePlugin
+main: pl.memexurer.kguild5.bukkit.CorePlugin
 authors: [ KGuild ]
 description: jebac kinczka
 website: kguild.pl
