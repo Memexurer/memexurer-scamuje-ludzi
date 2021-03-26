@@ -16,6 +16,6 @@
 
     <modules>
         <module>core-plugin</module>
-      <module>artifact-move-plugin</module>
+        <module>artifact-move-plugin</module>
     </modules>
 </project>
