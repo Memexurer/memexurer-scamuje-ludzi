@@ -1,27 +1,23 @@
 package pl.memexurer.kguild5.bukkit.system.data.user;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.bson.BsonBinary;
 import org.bson.Document;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import pl.memexurer.kguild5.bukkit.system.data.codec.Converter;
 
 public class UserDataModel {
 
   private final UUID uuid;
-  private final Map<String, Location> locationMap;
+  private final Map<String, Location> homes;
   private String name;
   private boolean hasChanged;
 
-  public UserDataModel(String name, UUID uuid, Location homes) {
+  public UserDataModel(String name, UUID uuid, Map<String, Location> homes) {
     this.name = name;
     this.uuid = uuid;
-    System.out.println(homes);
-    this.locationMap = new HashMap<>();
-    //  this.locationMap = homes;
+    this.homes = homes;
   }
 
   public String getName() {
@@ -36,12 +32,12 @@ public class UserDataModel {
     return uuid;
   }
 
-  public Map<String, Location> getLocationMap() {
-    return locationMap;
+  public Map<String, Location> getHomes() {
+    return homes;
   }
 
   public void setHome(String name, Location location) {
-    this.locationMap.put(name, location);
+    this.homes.put(name, location);
     this.hasChanged = true;
   }
 
@@ -55,7 +51,7 @@ public class UserDataModel {
       Document document = new Document();
       document.put("name", dataModel.name);
       document.put("_id", new BsonBinary(dataModel.uuid));
-      document.put("homes", new Location(Bukkit.getWorld("world"), 0, 0, 0));
+      document.put("homes", dataModel.homes);
       return document;
     }
 
@@ -63,7 +59,7 @@ public class UserDataModel {
       return new UserDataModel(
           dataModel.get("name", String.class),
           dataModel.get("_id", UUID.class),
-          dataModel.get("homes", Location.class)
+          dataModel.get("homes", Map.class)
       );
     }
 

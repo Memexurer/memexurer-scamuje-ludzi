@@ -28,7 +28,7 @@ public class HomeCommand extends BaseCommand {
   @Default
   public void onCommand(CommandSender sender) {
     Player player;
-    new HomeInventory(sender.hasPermission("core.homevip"), handler.getPlayer((player = (Player) sender)).getLocationMap())
+    new HomeInventory(sender.hasPermission("core.homevip"), handler.getPlayer((player = (Player) sender)).getHomes())
         .openInventory(player);
   }
 
@@ -73,7 +73,7 @@ public class HomeCommand extends BaseCommand {
         e.getWhoClicked().teleport(location);
         e.getWhoClicked().sendMessage(ChatHelper.fixColor("&gPrzeteleportowano!"));
       } else {
-     //    e.getWhoClicked().sendMessage(ChatHelper.fixColor("&gX: " + location.getBlockX() + " g"));
+        e.getWhoClicked().sendMessage(ChatHelper.fixColor("&gX: " + location.getBlockX() + " g"));
       }
 
       e.getWhoClicked().closeInventory();;
