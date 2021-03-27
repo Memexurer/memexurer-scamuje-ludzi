@@ -18,7 +18,7 @@ import pl.memexurer.kguild5.bukkit.commands.HomeCommand;
 import pl.memexurer.kguild5.bukkit.commands.QuickReloadCommand;
 import pl.memexurer.kguild5.bukkit.commands.SetHomeCommand;
 import pl.memexurer.kguild5.bukkit.system.data.codec.ConverterProvider;
-import pl.memexurer.kguild5.bukkit.system.data.codec.LocationConverter;
+import pl.memexurer.kguild5.bukkit.system.data.codec.converter.LocationConverter;
 import pl.memexurer.kguild5.bukkit.system.data.flat.FlatConfigurationUtils;
 import pl.memexurer.kguild5.bukkit.system.data.user.UserDataModel.ModelConverter;
 import pl.memexurer.kguild5.bukkit.system.data.user.UserHandler;

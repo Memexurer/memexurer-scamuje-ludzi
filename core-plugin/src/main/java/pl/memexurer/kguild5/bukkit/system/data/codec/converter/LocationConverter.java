@@ -1,8 +1,10 @@
-package pl.memexurer.kguild5.bukkit.system.data.codec;
+package pl.memexurer.kguild5.bukkit.system.data.codec.converter;
 
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import pl.memexurer.kguild5.bukkit.system.data.codec.CodecHelper;
+import pl.memexurer.kguild5.bukkit.system.data.codec.Converter;
 
 public class LocationConverter implements Converter<Location> {
 
