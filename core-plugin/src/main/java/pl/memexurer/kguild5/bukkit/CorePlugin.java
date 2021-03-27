@@ -11,8 +11,10 @@ import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.memexurer.kguild5.bukkit.commands.BackupCommand;
 import pl.memexurer.kguild5.bukkit.listener.InventoryListener;
 import pl.memexurer.kguild5.bukkit.listener.UserDataListener;
+import pl.memexurer.kguild5.bukkit.system.data.codec.converter.ItemConverter;
 import pl.memexurer.kguild5.bukkit.system.data.flat.FlatConfiguration;
 import pl.memexurer.kguild5.bukkit.commands.HomeCommand;
 import pl.memexurer.kguild5.bukkit.commands.QuickReloadCommand;
@@ -20,6 +22,7 @@ import pl.memexurer.kguild5.bukkit.commands.SetHomeCommand;
 import pl.memexurer.kguild5.bukkit.system.data.codec.ConverterProvider;
 import pl.memexurer.kguild5.bukkit.system.data.codec.converter.LocationConverter;
 import pl.memexurer.kguild5.bukkit.system.data.flat.FlatConfigurationUtils;
+import pl.memexurer.kguild5.bukkit.system.data.user.UserBackup.BackupConverter;
 import pl.memexurer.kguild5.bukkit.system.data.user.UserDataModel.ModelConverter;
 import pl.memexurer.kguild5.bukkit.system.data.user.UserHandler;
 
@@ -43,7 +46,9 @@ public final class CorePlugin extends JavaPlugin {
 
     CodecRegistry codecRegistry = CodecRegistries
         .fromRegistries(CodecRegistries
-                .fromProviders(new ConverterProvider(new LocationConverter(), new ModelConverter())),
+                .fromProviders(new ConverterProvider(
+                    new LocationConverter(), new ItemConverter(),
+                    new ModelConverter(), new BackupConverter())),
             MongoClient.getDefaultCodecRegistry());
 
     MongoDatabase database = (databaseConnection = new MongoClient(
@@ -67,6 +72,7 @@ public final class CorePlugin extends JavaPlugin {
     commandManager.registerCommand(new QuickReloadCommand());
     commandManager.registerCommand(new HomeCommand());
     commandManager.registerCommand(new SetHomeCommand());
+    commandManager.registerCommand(new BackupCommand());
 
     File flatConfigurationFile = new File(getDataFolder(), "styl_zycia.adisz");
     if (flatConfigurationFile.exists()) {

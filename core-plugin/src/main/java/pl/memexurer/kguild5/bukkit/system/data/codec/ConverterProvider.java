@@ -16,14 +16,21 @@ public class ConverterProvider implements CodecProvider {
     }
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public <T> Codec<T> get(Class<T> clazz, CodecRegistry registry) {
-    Converter<T> converter = (Converter<T>) classConverterMap.get(clazz);
+    Converter<T> converter = findAssignableConverter(clazz); //codec for itemstacks wont work without this
     if (converter == null) {
       return null;
     }
 
     return new ConverterCodec<>(converter, clazz, registry);
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T> Converter<T> findAssignableConverter(Class<T> tClass) {
+    for(Map.Entry<Class<?>, Converter<?>> converterEntry: classConverterMap.entrySet())
+      if(converterEntry.getKey().isAssignableFrom(tClass))
+        return (Converter<T>) converterEntry.getValue();
+      return null;
   }
 }

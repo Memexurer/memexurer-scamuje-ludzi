@@ -1,10 +1,12 @@
 package pl.memexurer.kguild5.bukkit.system.data.user;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.bson.BsonBinary;
 import org.bson.Document;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import pl.memexurer.kguild5.bukkit.system.data.codec.CodecHelper;
 import pl.memexurer.kguild5.bukkit.system.data.codec.Converter;
 
@@ -12,13 +14,16 @@ public class UserDataModel {
 
   private final UUID uuid;
   private final Map<String, Location> homes;
+  private final List<UserBackup> backupList;
   private String name;
   private boolean hasChanged;
 
-  public UserDataModel(String name, UUID uuid, Map<String, Location> homes) {
+  public UserDataModel(String name, UUID uuid, Map<String, Location> homes,
+      List<UserBackup> backupList) {
     this.name = name;
     this.uuid = uuid;
     this.homes = homes;
+    this.backupList = backupList;
   }
 
   public String getName() {
@@ -42,6 +47,15 @@ public class UserDataModel {
     this.hasChanged = true;
   }
 
+  public List<UserBackup> getBackupList() {
+    return backupList;
+  }
+
+  public void createBackup(Player player) {
+    backupList.add(UserBackup.createBackup(player));
+    this.hasChanged = true;
+  }
+
   void update() {
     this.hasChanged = false;
   }
@@ -53,20 +67,22 @@ public class UserDataModel {
       document.put("name", dataModel.name);
       document.put("_id", new BsonBinary(dataModel.uuid));
       document.put("homes", dataModel.homes);
+      document.put("backups", dataModel.backupList);
       return document;
+    }
+
+    @Override
+    public Class<UserDataModel> getConvertedClass() {
+      return UserDataModel.class;
     }
 
     public UserDataModel decode(Document dataModel, CodecHelper helper) {
       return new UserDataModel(
           dataModel.get("name", String.class),
           dataModel.get("_id", UUID.class),
-          helper.reinterpretMap((Document) dataModel.get("homes"), Location.class)
+          helper.reinterpretMap((Document) dataModel.get("homes"), Location.class),
+          helper.reinterpretList(dataModel.getList("backups", Document.class), UserBackup.class)
       );
-    }
-
-    @Override
-    public Class<UserDataModel> getConvertedClass() {
-      return UserDataModel.class;
     }
   }
 }

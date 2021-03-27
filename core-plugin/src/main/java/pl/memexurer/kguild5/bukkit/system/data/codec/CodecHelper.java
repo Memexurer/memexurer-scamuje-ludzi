@@ -1,7 +1,9 @@
 package pl.memexurer.kguild5.bukkit.system.data.codec;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.codecs.DecoderContext;
@@ -25,10 +27,17 @@ public final class CodecHelper {
   public <T> Map<String, T> reinterpretMap(Document document, Class<T> mapValueType) {
     Map<String, T> map = new HashMap<>();
 
-    for(Map.Entry<String, Object> mapEntry: document.entrySet()) {
+    for (Map.Entry<String, Object> mapEntry : document.entrySet()) {
       map.put(mapEntry.getKey(), reinterpret((Document) mapEntry.getValue(), mapValueType));
     }
 
     return map;
+  }
+
+  public <T> List<T> reinterpretList(List<Document> documentList, Class<T> userBackupClass) {
+    return documentList
+        .stream()
+        .map(d -> d == null ? null : reinterpret(d, userBackupClass))
+        .collect(Collectors.toList());
   }
 }

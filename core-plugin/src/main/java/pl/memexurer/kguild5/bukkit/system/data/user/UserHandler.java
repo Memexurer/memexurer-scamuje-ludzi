@@ -1,6 +1,7 @@
 package pl.memexurer.kguild5.bukkit.system.data.user;
 
 import com.mongodb.client.MongoDatabase;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -65,7 +66,12 @@ public class UserHandler {
       return dataModel;
     }
 
-    dataModel = new UserDataModel(player.getName(), player.getUniqueId(), new HashMap<>());
+    dataModel = new UserDataModel(
+        player.getName(),
+        player.getUniqueId(),
+        new HashMap<>(),
+        new ArrayList<>()
+    );
     dataModelMap.put(dataModel.getUuid(), dataModel);
     return dataModel;
   }
