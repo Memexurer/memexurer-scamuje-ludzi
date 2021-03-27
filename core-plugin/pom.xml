@@ -35,7 +35,7 @@
         <artifactId>artifact-move-plugin</artifactId>
         <configuration>
           <from>${basedir}/target/core-plugin-1.0-SNAPSHOT.jar</from>
-          <to>/home/memexurer/Desktop/spigot/plugins/core-plugin.jar</to>
+          <to>/home/memexurer/Desktop/servers/spigot/plugins/core-plugin.jar</to>
         </configuration>
         <executions>
           <execution>
