@@ -28,7 +28,7 @@ public class SetHomeCommand extends BaseCommand {
     int homeCount = sender.hasPermission("core.homesvip") ? 2 : 1;
 
     UserDataModel model = handler.getPlayer(player);
-    if(model.getLocationMap().size() >= homeCount && !model.getLocationMap().containsKey(name)) {
+    if(model.getHomes().size() >= homeCount && !model.getHomes().containsKey(name)) {
       player.sendMessage("Posiadasz za duzo domkow!");
       return;
     }

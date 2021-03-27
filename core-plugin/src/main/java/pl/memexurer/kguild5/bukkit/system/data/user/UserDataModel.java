@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.bson.BsonBinary;
 import org.bson.Document;
 import org.bukkit.Location;
+import pl.memexurer.kguild5.bukkit.system.data.codec.CodecHelper;
 import pl.memexurer.kguild5.bukkit.system.data.codec.Converter;
 
 public class UserDataModel {
@@ -55,11 +56,11 @@ public class UserDataModel {
       return document;
     }
 
-    public UserDataModel decode(Document dataModel) {
+    public UserDataModel decode(Document dataModel, CodecHelper helper) {
       return new UserDataModel(
           dataModel.get("name", String.class),
           dataModel.get("_id", UUID.class),
-          dataModel.get("homes", Map.class)
+          helper.reinterpretMap((Document) dataModel.get("homes"), Location.class)
       );
     }
 

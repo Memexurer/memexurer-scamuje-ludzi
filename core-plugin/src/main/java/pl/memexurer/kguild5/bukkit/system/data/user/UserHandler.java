@@ -65,7 +65,7 @@ public class UserHandler {
       return dataModel;
     }
 
-    dataModel = new UserDataModel(player.getName(), player.getUniqueId(), null);
+    dataModel = new UserDataModel(player.getName(), player.getUniqueId(), new HashMap<>());
     dataModelMap.put(dataModel.getUuid(), dataModel);
     return dataModel;
   }

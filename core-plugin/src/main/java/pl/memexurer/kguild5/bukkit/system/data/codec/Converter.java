@@ -6,7 +6,7 @@ public interface Converter<T> {
 
   Document encode(T t);
 
-  T decode(Document document);
+  T decode(Document document, CodecHelper helper);
 
   Class<T> getConvertedClass();
 }
