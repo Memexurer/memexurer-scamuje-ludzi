@@ -75,6 +75,11 @@
       <artifactId>acf-paper</artifactId>
       <version>0.5.0-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>org.diorite</groupId>
+      <artifactId>diorite-config-minimal</artifactId>
+      <version>1.2</version>
+    </dependency>
   </dependencies>
 
   <description>KGuilds v1.2</description>
@@ -106,6 +111,11 @@
     <repository>
       <id>aikar</id>
       <url>https://repo.aikar.co/content/groups/aikar/</url>
+    </repository>
+    <repository>
+      <id>panda-repository</id>
+      <name>Panda Repository</name>
+      <url>https://repo.panda-lang.org/</url>
     </repository>
   </repositories>
 

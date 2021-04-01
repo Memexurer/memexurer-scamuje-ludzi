@@ -11,17 +11,17 @@ import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.diorite.cfg.Configuration;
 import pl.memexurer.kguild5.bukkit.commands.BackupCommand;
 import pl.memexurer.kguild5.bukkit.listener.InventoryListener;
 import pl.memexurer.kguild5.bukkit.listener.UserDataListener;
 import pl.memexurer.kguild5.bukkit.system.data.codec.converter.ItemConverter;
-import pl.memexurer.kguild5.bukkit.system.data.flat.FlatConfiguration;
 import pl.memexurer.kguild5.bukkit.commands.HomeCommand;
 import pl.memexurer.kguild5.bukkit.commands.QuickReloadCommand;
 import pl.memexurer.kguild5.bukkit.commands.SetHomeCommand;
 import pl.memexurer.kguild5.bukkit.system.data.codec.ConverterProvider;
 import pl.memexurer.kguild5.bukkit.system.data.codec.converter.LocationConverter;
-import pl.memexurer.kguild5.bukkit.system.data.flat.FlatConfigurationUtils;
+import pl.memexurer.kguild5.bukkit.system.data.flat.PluginConfiguration;
 import pl.memexurer.kguild5.bukkit.system.data.user.UserBackup.BackupConverter;
 import pl.memexurer.kguild5.bukkit.system.data.user.UserDataModel.ModelConverter;
 import pl.memexurer.kguild5.bukkit.system.data.user.UserHandler;
@@ -32,11 +32,12 @@ public final class CorePlugin extends JavaPlugin {
   private MongoClient databaseConnection;
   private UserHandler userHandler;
 
+  private PluginConfiguration pluginConfiguration;
+
   public static CorePlugin getInstance() {
     return instance;
   }
 
-  @Override
   public void onEnable() {
     instance = this;
 
@@ -74,15 +75,20 @@ public final class CorePlugin extends JavaPlugin {
     commandManager.registerCommand(new SetHomeCommand());
     commandManager.registerCommand(new BackupCommand());
 
-    File flatConfigurationFile = new File(getDataFolder(), "styl_zycia.adisz");
-    if (flatConfigurationFile.exists()) {
-      try {
-        FlatConfigurationUtils.load(FlatConfiguration.class, flatConfigurationFile);
-      } catch (IOException e) {
-        getLogger().severe("styl zycia adisz");
-        e.printStackTrace();
-      }
+    try {
+      pluginConfiguration = Configuration.loadConfigFile(
+          new File(getDataFolder(), "config.yml"),
+          PluginConfiguration.class, new PluginConfiguration()
+      );
+    } catch (IOException e) {
+      die("cos sie zjebalo przy ladowaniu configu", e);
     }
+  }
+
+  private void die(String message, Throwable throwable) {
+    getLogger().severe(message);
+    throwable.printStackTrace();
+    getServer().getPluginManager().disablePlugin(this);
   }
 
   public UserHandler getUserHandler() {
@@ -94,14 +100,6 @@ public final class CorePlugin extends JavaPlugin {
     userHandler.update();
     if (databaseConnection != null) {
       databaseConnection.close();
-    }
-
-    try {
-      File outFile = new File(getDataFolder(), "config.json");
-      FlatConfigurationUtils.save(FlatConfiguration.class, outFile);
-    } catch (IOException e) {
-      getLogger().severe("styl zycia adisz");
-      e.printStackTrace();
     }
   }
 }
